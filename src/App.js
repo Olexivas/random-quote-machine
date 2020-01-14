@@ -1,26 +1,55 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { Component } from "react";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export class App extends Component {
+  state = {
+    data: []
+  };
+
+  fetchApi = () => {
+      fetch("https://api.quotable.io/random")
+      .then(res => res.json())
+      .then(data =>
+        this.setState({
+          data
+        })
+      );
+  };
+
+  handleClick = () => {
+    this.fetchApi();
+  }
+
+  componentDidMount = () => {
+      this.fetchApi();
+  }
+
+  render() {
+    const { content, author } = this.state.data;
+
+    return (
+      <div className="wrapper">
+        <div className="quote-box">
+          <p className="quote-text">
+            {content}
+          </p>
+          <p className="quote-author">{author}</p>
+        </div>
+
+        <div className="buttons">
+          <a href="#" className="btn">
+            Twitter
+          </a>
+          <a href="#" className="btn" onClick={this.handleClick}>
+            New Quote
+          </a>
+        </div>
+
+        <footer className="footer">
+          <p>By Olexivas</p>
+        </footer>
+      </div>
+    );
+  }
 }
 
 export default App;
